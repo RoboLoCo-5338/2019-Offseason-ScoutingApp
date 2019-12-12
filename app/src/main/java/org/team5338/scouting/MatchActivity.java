@@ -7,10 +7,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -62,10 +62,7 @@ public class MatchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_match);
 
 
-        setPlusMinus(R.id.sandstorm_hatch_minus, R.id.sandstorm_hatch_plus, R.id.sandstorm_hatch);
-        setPlusMinus(R.id.sandstorm_cargo_minus, R.id.sandstorm_cargo_plus, R.id.sandstorm_cargo);
-        setPlusMinus(R.id.teleop_hatch_minus, R.id.teleop_hatch_plus, R.id.teleop_hatch);
-        setPlusMinus(R.id.teleop_cargo_minus, R.id.teleop_cargo_plus, R.id.teleop_cargo);
+        setPlusMinus(R.id.teleop_cube_minus, R.id.teleop_cube_plus, R.id.teleop_cube);
 
         FloatingActionButton submit = findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -78,15 +75,15 @@ public class MatchActivity extends AppCompatActivity {
                     json.put("scouter", getIntent().getExtras().get("scouter"));
                     json.put("match_number", Integer.parseInt(((EditText) findViewById(R.id.match_number)).getText().toString()));
                     json.put("team_number", Integer.parseInt(((EditText) findViewById(R.id.team_number)).getText().toString()));
-                    json.put("starting_pos", ((RadioButton) findViewById(((RadioGroup) findViewById(R.id.starting_group)).getCheckedRadioButtonId())).getText().toString());
-                    json.put("sandstorm_hatch", Integer.parseInt(((TextView) findViewById(R.id.sandstorm_hatch)).getText().toString()));
-                    json.put("sandstorm_cargo", Integer.parseInt(((TextView) findViewById(R.id.sandstorm_cargo)).getText().toString()));
-                    json.put("teleop_hatch", Integer.parseInt(((TextView) findViewById(R.id.teleop_hatch)).getText().toString()));
-                    json.put("teleop_cargo", Integer.parseInt(((TextView) findViewById(R.id.teleop_cargo)).getText().toString()));
-                    json.put("ending_pos", ((RadioButton) findViewById(((RadioGroup) findViewById(R.id.ending_group)).getCheckedRadioButtonId())).getText().toString());
+                    json.put("bunny_support",((CheckBox) findViewById(R.id.auto_bunny_support)).isChecked() );
+                    json.put("tub_contact", ((CheckBox) findViewById(R.id.auto_tub_contact)).isChecked() );
+                    json.put("tub_support", ((CheckBox) findViewById(R.id.auto_tub_support)).isChecked() );
+                    json.put("teleop_cubes", Integer.parseInt(((TextView) findViewById(R.id.teleop_cube)).getText().toString()));
+                    json.put("ending_bunny", ((CheckBox) findViewById(R.id.teleop_ending_bunny)).isChecked() );
+                    //json.put("ending_bunny", ((RadioButton) findViewById(((RadioGroup) findViewById(R.id.ending_group)).getCheckedRadioButtonId())).getText().toString());
                     array.put(json);
 
-                    File path = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/frc_scouting");
+                    File path = new File("/sdcard/frc_scouting");
                     path.mkdirs();
                     File file = new File(path.getAbsolutePath() + "/match" + json.getInt("match_number")+"_team" + json.getInt("team_number") + ".json");
                     Log.i("filepath", file.getAbsolutePath());
@@ -101,12 +98,9 @@ public class MatchActivity extends AppCompatActivity {
 
                     ((EditText) findViewById(R.id.match_number)).setText("");
                     ((EditText) findViewById(R.id.team_number)).setText("");
-                    ((RadioButton) findViewById(((RadioGroup) findViewById(R.id.starting_group)).getCheckedRadioButtonId())).toggle();
-                    ((TextView) findViewById(R.id.sandstorm_hatch)).setText("0");
-                    ((TextView) findViewById(R.id.sandstorm_cargo)).setText("0");
-                    ((TextView) findViewById(R.id.teleop_hatch)).setText("0");
-                    ((TextView) findViewById(R.id.teleop_cargo)).setText("0");
-                    ((RadioButton) findViewById(((RadioGroup) findViewById(R.id.ending_group)).getCheckedRadioButtonId())).toggle();
+                    //((RadioButton) findViewById(((RadioGroup) findViewById(R.id.auto_tasks)).getCheckedRadioButtonId())).toggle();
+                    ((TextView) findViewById(R.id.teleop_cube)).setText("0");
+                    //((RadioButton) findViewById(((RadioGroup) findViewById(R.id.ending_group)).getCheckedRadioButtonId())).toggle();
 
                 } catch (Exception e) {
                     e.printStackTrace();
